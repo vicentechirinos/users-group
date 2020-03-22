@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection as CollectionQueryBuilder;
 
 trait ApiResponser{
 
@@ -20,6 +21,10 @@ trait ApiResponser{
 	}
 
 	protected function showAll(Collection $data, $code=200){
+		return $this->successResponse($data, $code);
+	}
+
+	protected function showAllQueryBuilder(CollectionQueryBuilder $data, $code=200){
 		return $this->successResponse($data, $code);
 	}
 
