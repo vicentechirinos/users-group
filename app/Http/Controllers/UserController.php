@@ -128,31 +128,20 @@ class UserController extends ApiController
         return $this->messageResponse('El usuario no esta asociado a ningun grupo.',406);
     }
 
-    public function getParentUserCreateUsersGroup($user_id){
+    public function getUsersCreatedByParentUser($parent_id){
 
-        $usersGroups=User::findOrFail($user_id)->addUserGroups;
-        $array=[];
-        if(count($usersGroups)){
-
-            foreach ($usersGroups as $usergroup) {
-                $array[]=$usergroup->user_id;
-            }
-            $users=DB::table('users')
-                ->whereIn('id', $array)
-                ->distinct('id')
+        $users=DB::table('users as u')
+                ->join('group_user as gu','u.id','=','gu.user_id')
+                ->join('groups as g','g.id','=','gu.group_id')
+                ->select('u.id','u.name as username','u.email','g.id as group_id','g.name as group_name')
+                ->where('gu.parent_user',$parent_id)
+                //->distinct('u.id')
                 ->get();
 
-            /*$users->each(function ($user, $key){
-                $user->groups()->
-            });*/
-
-            return response()->json(['data'=>$users],200);
-        }
-
-        return $this->messageResponse('El usuario no creo ningun grupo.',406);
+        return $this->showAllQueryBuilder($users);
     }
 
-    public function parentUserCreateUsersGroup(Request $request){
+    public function parentUserCreateUsersInGroup(Request $request){
         $rules=[
             'group_id'=>'required|integer|numeric|exists:groups,id',
             'user_id'=>'required|integer|numeric|exists:users,id',
@@ -175,7 +164,8 @@ class UserController extends ApiController
             $inputs=$request->all();
             $inputs['start_date']=now();
             $inputs['status']=0;
-            GroupUser::create($inputs);
+            User::findOrFail($request->parent_user)->addUserGroups()->create($inputs);
+            //GroupUser::create($inputs);
             return $this->messageResponse('Usuario registrado en el grupo éxitosamente',201);
         }
         return $this->messageResponse('El usuario ya esta registrado en el grupo',406);
