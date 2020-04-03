@@ -3,10 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class GroupUser extends Model
+class GroupUser extends Pivot
 {
-    protected $table='group_user';
+    //protected $table='group_user';
     protected $fillable=[
     	'group_id','user_id','parent_user','start_date','status',
     ];

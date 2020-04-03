@@ -33,8 +33,6 @@ class NoteController extends ApiController
             return $this->messageResponse('Nota agregada éxitosamente.',201);
         }else
             return $this->messageResponse('El usuario no esta activo o no existe en el grupo',406);
-
-        //return $this->messageResponse('Ocurrio un error inesperado al agregar la nota',500);
     }
 
     /**

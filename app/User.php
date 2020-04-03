@@ -40,7 +40,7 @@ class User extends Authenticatable
     /*RELATIONSHIP*/
 
     public function groups(){
-        return $this->belongsToMany('App\Group')->withPivot('parent_user','start_date','status');
+        return $this->belongsToMany('App\Group')->using('App\GroupUser')->withPivot('parent_user','start_date','status');
     }
 
     public function createGroups(){
@@ -52,17 +52,11 @@ class User extends Authenticatable
     }
 
     public static function userExistInGroup($user_id, $group_id){
-        $data=User::findOrFail($user_id)->groups()->where('group_id',$group_id)->first();
-        if($data)
-            return 1;
-        return 0;
+        return !empty(User::findOrFail($user_id)->groups()->where('group_id',$group_id)->first()) ? true : false;
     }
 
     public static function userActiveInGroup($user_id, $group_id){
-        $data=User::findOrFail($user_id)->groups()->where('group_id',$group_id)->where('status',1)->first();
-        if($data)
-            return 1;
-        return 0;
+        return !empty(User::findOrFail($user_id)->groups()->where('group_id',$group_id)->where('status',1)->first()) ? true : false;
     }
 
 

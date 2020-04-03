@@ -12,12 +12,12 @@ class Group extends Model
     	'name','user_id',
     ];
 
-    public function user(){
-    	return $this->belongsTo('App\User');
+    public function users(){
+        return $this->belongsToMany('App\User')->using('App\GroupUser')->withPivot('parent_user','start_date','status');
     }
 
-    public function users(){
-    	return $this->belongsToMany('App\User')->withPivot('parent_user','start_date','status');
+    public function user(){
+    	return $this->belongsTo('App\User');
     }
     
 }

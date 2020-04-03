@@ -21,8 +21,9 @@ Route::middleware('auth:api')->group(function(){
 	Route::resource('group','GroupController')->except('create','edit','destroy');
 	Route::get('groupscreatedbyuser/{id}','GroupController@groupsCreatedByUser');
 	Route::get('userassociatedgroup/{id}','UserController@userAssociatedGroup');
-	Route::post('parentusercreateusersgroup','UserController@parentUserCreateUsersGroup');
-	Route::get('getparentusercreateusersgroup/{id}','UserController@getParentUserCreateUsersGroup');
+	Route::post('parentusercreateusersgroup','UserController@parentUserCreateUsersInGroup');
+	Route::get('getuserscreatedbyparentuser/{id}','UserController@getUsersCreatedByParentUser');
 	Route::post('signinusergroup','UserController@userSignInGroup');
 	Route::post('createnoteingroup','NoteController@createNoteInGroup');
+	
 });

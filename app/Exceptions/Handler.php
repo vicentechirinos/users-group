@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
 
         if($exception instanceof ModelNotFoundException){
             $model=class_basename($exception->getModel());
-            return $this->messageResponse('No existe ninguna instancia del modelo {$model} con el id especificado.', 404);
+            return $this->messageResponse('No existe ninguna instancia del modelo ' . $model . ' con el id especificado.', 404);
         }
 
         if($exception instanceof AuthenticationException)
